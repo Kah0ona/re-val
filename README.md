@@ -1,6 +1,8 @@
 # re-val
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+A [re-frame](https://github.com/Day8/re-frame) library for creating forms and validating their fields.
+
+Provides a neat API on various detail levels through re-frame subscriptions and re-frame events.
 
 ## Development Mode
 
