@@ -4,6 +4,8 @@ A [re-frame](https://github.com/Day8/re-frame) library for creating forms and va
 
 Provides a neat API on various detail levels through re-frame subscriptions and re-frame events.
 
+This library ships with a demo folder, which will be run when running `lein dev` (or when figwheel starts)
+
 ## Development Mode
 
 ### Start Cider from Emacs:
