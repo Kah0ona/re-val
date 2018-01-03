@@ -70,18 +70,21 @@
   "This thing works with cljs-time date-time"
   [form-id k & [edit?]]
   (let [doc (rf/subscribe [:get-form-field-data form-id k])]
-    [dpc/datepicker
-     {:id          :date_published
-      :date-format "dd-mm-yyyy"
-      :inline      false
-      :auto-close? true
-      :disabled    (if (nil? edit?) false (not edit?))
-      :lang        :nl-NL}
-     {:get   (fn [_]
-               (or
-                (dutil/date-picker-parser (get @doc k))
-                ""))
-      :save! #(rf/dispatch [:update-form-field form-id k (dutil/date-picker-unparser %2)])}]))
+    (fn [form-id k & [edit?]]
+      [:span.datepicker-wrap
+       [dpc/datepicker
+        {:id          k
+         :date-format "dd-mm-yyyy"
+         :inline      false
+         :auto-close? true
+         :disabled    (if (nil? edit?) false (not edit?))
+         :placeholder "DD-MM-YYYY"
+         :lang        :nl-NL}
+        {:get   (fn [_]
+                  (or
+                   (dutil/date-picker-parser @doc)
+                   ""))
+         :save! #(rf/dispatch [:update-form-field form-id k (dutil/date-picker-unparser %2)])}]])))
 
 (defn text-area
   [form-id k & rest]
@@ -149,18 +152,18 @@
 (defn form-error-listing
   [form-id]
   (let [invalid-fields (rf/subscribe [:get-form-invalid-fields form-id])
-        fields         (rf/subscribe [:get-form-fields form-id])])
-  (fn [invalid-fields fields]
-    (let [titles (fields->titles fields)]
-      (debug invalid-fields)
-      (when-not (empty? invalid-fields)
-        [:div.alert.alert-danger
-         "Sommige velden zijn niet goed ingevuld: "
-         [:ul (doall
-               (map (fn [[k e]]
-                      [:li {:key k}
-                       (str (get titles k) ": " (first e))])
-                    invalid-fields))]]))))
+        fields         (rf/subscribe [:get-form-fields form-id])]
+    (fn []
+      (let [titles (fields->titles @fields)]
+        (debug @invalid-fields)
+        (when-not (empty? @invalid-fields)
+          [:div.alert.alert-danger
+           "Sommige velden zijn niet goed ingevuld: "
+           [:ul (doall
+                 (map (fn [[k e]]
+                        [:li {:key k}
+                         (str (get titles k) ": " (first e))])
+                      @invalid-fields))]])))))
 
 (defn colorpicker-inner
   [options]

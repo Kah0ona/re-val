@@ -13,23 +13,23 @@
 (def form-id :form)
 
 (def form-fields
-  [{:id :firstname
-    :title "Voornaam"
+  [{:id         :firstname
+    :title      "Voornaam"
     :validators [v/required-validator]}
-   {:id :surname
-    :title "Achternaam"
+   {:id         :surname
+    :title      "Achternaam"
     :validators [v/required-validator]}
-   {:id :bio
+   {:id    :bio
     :title "Bio"}
-   {:id :number
+   {:id    :number
     :title "Nummer"}])
 
 (def form-opts
-  {:id form-id
-   :url "/something" ;;TODO make this a 'persist dispatch?'
-   :success-fn #(rf/dispatch [:do-something])
+  {:id          form-id
+   :url         "/something" ;;TODO make this a 'persist dispatch?'
+   :success-fn  #(rf/dispatch [:do-something])
    :primary-key :id
-   :fields form-fields})
+   :fields      form-fields})
 
 (def initial-data
   {:id 1
@@ -48,8 +48,6 @@
       [form/text-input form-id :firstname]
       [form/text-input form-id :surname]]
 
-     ;;TODO add more
-
-     [form/form-error-listing]
+     [form/form-error-listing form-id]
 
      ]))

@@ -5,7 +5,6 @@
             [re-val.datepicker-util]
             [re-val.events]
             [re-val.subs]
-            [re-val.typeahead_list]
             [re-val.validators]
             [re-val.views]
             [cljsjs.quill]

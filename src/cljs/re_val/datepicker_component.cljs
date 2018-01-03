@@ -269,28 +269,31 @@
 
 
 (defn datepicker
-  [{:keys [id date-format inline auto-close? lang disabled] :or {lang :en-US} :as attrs} {:keys [doc get save!]}]
-  (let [fmt (parse-format date-format)
-        selected-date (get id)
+  [{:keys [id date-format inline auto-close? lang disabled expanded] :or {expanded false
+                                                                          lang :en-US} :as attrs} {:keys [doc get save!]}]
+  (let [fmt            (parse-format date-format)
+        selected-date  (get id)
         selected-month (if (pos? (:month selected-date)) (dec (:month selected-date)) (:month selected-date))
-        today (js/Date.)
-        year (or (:year selected-date) (.getFullYear today))
-        month (or selected-month (.getMonth today))
-        day (or (:day selected-date) (.getDate today))
-        expanded? (atom false)]
-    (fn [{:keys [id date-format inline auto-close? lang disabled] :or {lang :en-US} :as attrs} {:keys [doc get save!]}]
+        today          (js/Date.)
+        year           (or (:year selected-date) (.getFullYear today))
+        month          (or selected-month (.getMonth today))
+        day            (or (:day selected-date) (.getDate today))
+        expanded?      (atom expanded)]
+    (fn [{:keys [id date-format inline auto-close? lang disabled expanded]
+          :or {lang :en-US
+               expanded false} :as attrs} {:keys [doc get save!]}]
       [:div.datepicker-wrapper
        [:div.input-group.date
         [:input.form-control
          (merge
-           {:read-only true
-            :type :text
-            :disabled disabled
-            :on-click #(do
+          {:read-only true
+           :type      :text
+           :disabled  disabled
+           :on-click  #(do
                          (.preventDefault %)
                          (when-not disabled
                            (swap! expanded? not)))
-            :value (when-let [date (get id)] (format-date date fmt))}
+           :value     (when-let [date (get id)] (format-date date fmt))}
            (dissoc attrs :date-format :auto-close? :inline))]
         [:span.input-group-addon
          {:on-click #(do

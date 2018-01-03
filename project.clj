@@ -8,6 +8,7 @@
                  [re-frame-utils "0.1.0-SNAPSHOT"]
                  [com.taoensso/timbre "4.10.0"]
                  [cljsjs/quill "1.2.5-4"]
+                 [cljs-ajax "0.7.2"]
                  [fipp "0.6.10"] ;;pretty printer cljs
                  [com.andrewmcveigh/cljs-time "0.5.1"] ;date/time
                  [re-frame "0.10.1"]]
@@ -39,13 +40,15 @@
 
     :plugins [[lein-figwheel "0.5.13"]
               [lein-doo "0.1.8"]
-              [lein-pdo "0.1.1"]]}}
+              [lein-pdo "0.1.1"]]
+
+    :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}
 
   :cljsbuild
   {:builds
    [{:id           "dev"
      :source-paths ["src/cljs"]
-     :figwheel     {:on-jsload "re-val.core/mount-root"}
+     :figwheel     {:on-jsload "re-val-demo.core/mount-root"}
      :compiler     {:main                 re-val.core
                     :output-to            "resources/public/js/compiled/app.js"
                     :output-dir           "resources/public/js/compiled/out"

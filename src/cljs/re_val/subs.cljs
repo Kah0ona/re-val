@@ -1,5 +1,7 @@
 (ns re-val.subs
   (:require [reagent.core :as r]
+            [re-frame.core :as rf]
+            [re-val.events :as h]
             [re-frame.core :as re-frame]))
 
 (rf/reg-sub
@@ -8,12 +10,17 @@
    (let [fields (get-in db [:data id :options :fields])
          data (get-in db [:data id :data])
          validation (get-in db [:data id :validation])]
-     (valid-form? fields data validation))))
+     (h/valid-form? fields data validation))))
 
 (rf/reg-sub
  :get-form-data
  (fn [db [_ id]]
    (get-in db [:data id :data])))
+
+(rf/reg-sub
+ :get-form-field-data
+ (fn [db [_ id k]]
+   (get-in db [:data id :data k])))
 
 (rf/reg-sub
  :get-form-field
@@ -34,7 +41,7 @@
  (fn [[data validation-store {:keys [fields] :as options}] [_ form-id full?]]
    (if (= :full full?)
      ;;validate all fields
-     (validate-all-fields (empty-validation-store fields) fields data)
+     (h/validate-all-fields (h/empty-validation-store fields) fields data)
      ;;else, validate against existing validation store
      validation-store)))
 
