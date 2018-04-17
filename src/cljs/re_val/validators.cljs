@@ -33,3 +33,16 @@
   (if (and (not (nil? s)) (boolean? s) s)
     [true ]
     [false "dit veld moet geselecteerd zijn."]))
+
+
+(defn valid-email?
+  [email]
+  (let [pattern #"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"]
+    (and (string? email) (re-matches pattern email))))
+
+
+(defn email-validator
+  [s]
+  (if (valid-email? s)
+    [true]
+    [false "Dit is geen geldig e-mailadres."]))

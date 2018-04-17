@@ -301,7 +301,7 @@
                          (when-not disabled
                            (swap! expanded? not)))
            :value     (when-let [date (get id)] (format-date date fmt))}
-           (dissoc attrs :date-format :auto-close? :inline))]
+           (dissoc attrs :initial-view :date-format :auto-close? :inline))]
         [:span.input-group-addon
          {:on-click #(do
                        (.preventDefault %)
