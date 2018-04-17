@@ -252,15 +252,15 @@
      (into [:tbody]
            (gen-days date get save! expanded? auto-close? local-first-day))]))
 
-(defn datepicker-inner [year month day expanded? auto-close? get save! inline lang]
-  (let [date (atom [year month day])
-        view-selector (atom :day)
-        names (if (and (keyword? lang) (contains? dates lang))
-                (lang dates)
-                (if (every? #(contains? lang %) [:months :months-short :days :days-short :first-day])
-                  lang
-                  (:en-US dates)))]
-    (fn [year month day expanded? auto-close? get save! inline lang]
+(defn datepicker-inner [year month day expanded? auto-close? get save! inline lang initial-view]
+  (let [date          (atom [year month day])
+        view-selector (atom (or initial-view :day))
+        names         (if (and (keyword? lang) (contains? dates lang))
+                        (lang dates)
+                        (if (every? #(contains? lang %) [:months :months-short :days :days-short :first-day])
+                          lang
+                          (:en-US dates)))]
+    (fn [year month day expanded? auto-close? get save! inline lang initial-view]
       [:div {:className (str "datepicker" (when-not @expanded? " dropdown-menu") (if inline " dp-inline" " dp-dropdown"))}
        (condp = @view-selector
          :day   [day-picker date get save! view-selector expanded? auto-close? names]
@@ -269,8 +269,12 @@
 
 
 (defn datepicker
-  [{:keys [id date-format inline auto-close? lang disabled expanded] :or {expanded false
-                                                                          lang :en-US} :as attrs} {:keys [doc get save!]}]
+  [{:keys [id date-format inline auto-close? lang disabled expanded initial-view]
+    :or   {expanded     false
+           lang         :en-US
+           initial-view :day}
+    :as   attrs}
+   {:keys [doc get save!]}]
   (let [fmt            (parse-format date-format)
         selected-date  (get id)
         selected-month (if (pos? (:month selected-date)) (dec (:month selected-date)) (:month selected-date))
@@ -279,9 +283,12 @@
         month          (or selected-month (.getMonth today))
         day            (or (:day selected-date) (.getDate today))
         expanded?      (atom expanded)]
-    (fn [{:keys [id date-format inline auto-close? lang disabled expanded]
-          :or {lang :en-US
-               expanded false} :as attrs} {:keys [doc get save!]}]
+    (fn [{:keys [id date-format inline auto-close? lang disabled expanded initial-view]
+          :or   {expanded     false
+                 lang         :en-US
+                 initial-view :day}
+          :as   attrs}
+         {:keys [doc get save!]}]
       [:div.datepicker-wrapper
        [:div.input-group.date
         [:input.form-control
@@ -301,4 +308,4 @@
                        (when-not disabled
                          (swap! expanded? not)))}
          [:i.glyphicon.glyphicon-calendar]]]
-       [datepicker-inner year month day expanded? auto-close? #(get id) #(save! id %) inline lang]])))
+       [datepicker-inner year month day expanded? auto-close? #(get id) #(save! id %) inline lang initial-view]])))
