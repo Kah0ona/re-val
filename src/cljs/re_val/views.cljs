@@ -130,7 +130,7 @@
     (fn
       [form-id k options & [on-change]]
       [:div {:class (get-class k @validation)}
-       [:select
+       [:select.form-control
         {:on-change chg
          :value     (if (nil? @doc)
                       ":nothing-selected"
