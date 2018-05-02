@@ -33,13 +33,14 @@
         :on-change-fn #(rf/dispatch [:update-form-field form-id k %2])}])))
 
 (defn text-input
-  [form-id k & rest]
+  [form-id k & [rest]]
   (let [validation (rf/subscribe [:get-form-validation form-id])
         doc        (rf/subscribe [:get-form-field-data form-id k])]
     (fn [form-id k]
       #_(debug @doc @validation)
       [:input.form-control
        {:type      :text
+        :placeholder (:placeholder rest)
         :class     (get-class k @validation)
         :on-change #(rf/dispatch [:update-form-field form-id k (-> % .-target .-value)])
         :value     @doc}])))
