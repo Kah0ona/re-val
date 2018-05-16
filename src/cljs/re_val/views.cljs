@@ -62,7 +62,7 @@
         doc        (rf/subscribe [:get-form-field-data form-id k])]
     (fn [form-id k]
       [:input.form-control
-       {:type      :numeric
+       {:type      :number
         :class     (get-class k @validation)
         :on-change #(rf/dispatch [:update-form-field form-id k (-> % .-target .-value)])
         :value     @doc}])))
