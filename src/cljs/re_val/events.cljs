@@ -180,6 +180,15 @@
    fields))
 
 (rf/reg-event-db
+ :force-full-validation
+ (fn [db [_ id]]
+   (let [{:keys [options data]}    (get-in db [:data id])
+         fields                    (:fields options)
+         validation                (validate-all-fields (empty-validation-store fields) fields data)]
+     (assoc-in db [:data id :validation] validation))))
+
+
+(rf/reg-event-db
  :persist-form
  (fn [db [_ id optional-mergeable-params]]
    (let [{:keys [options data]} (get-in db [:data id])
