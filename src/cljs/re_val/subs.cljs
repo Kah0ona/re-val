@@ -10,7 +10,7 @@
    (let [fields (get-in db [:data id :options :fields])
          data (get-in db [:data id :data])
          validation (get-in db [:data id :validation])]
-     (h/valid-form? fields data validation))))
+     (h/valid-form? fields data validation db))))
 
 (rf/reg-sub
  :get-form-data

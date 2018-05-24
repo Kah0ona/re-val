@@ -261,7 +261,7 @@
    db))
 
 (defn valid-form?
-  [fields data validation]
+  [fields data validation db]
   (let [;;validate whole record, THEN judge
         {:keys [invalid-fields]}
         (reduce
