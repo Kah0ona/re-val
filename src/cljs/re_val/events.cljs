@@ -24,10 +24,10 @@
 (defn update-validation-store
   "Updates the validation store"
   [{:keys [new-fields invalid-fields valid-fields] :as validation-store}
-   validators k v]
+   validators k v db]
   (let [errors (reduce
                 (fn [error-list validator]
-                  (let [[valid? msg] (validator v)]
+                  (let [[valid? msg] (validator v k db)]
                     (if valid?
                       error-list
                       (conj error-list msg))))
@@ -117,7 +117,8 @@
                        (update-validation-store
                         validation-store
                         (lookup-validators fields k)
-                        k v))
+                        k v
+                        db))
                      ;;initial value
                      (empty-validation-store fields)
                      data)]
@@ -137,7 +138,7 @@
                        (update-validation-store
                         validation-store
                         (lookup-validators fields k)
-                        k v))
+                        k v db))
                      ;;initial value
                      {:new-fields (set (->> fields (map :id)))
                       :invalid-fields {}
@@ -162,7 +163,7 @@
        (rf/dispatch callback))
      (-> db
          (update-in [:data id :validation]
-                    update-validation-store validators k v)
+                    update-validation-store validators k v db)
          (assoc-in [:data id :data k] v)))))
 
 (defn validate-all-fields
@@ -175,7 +176,7 @@
        (update-validation-store
         validation-store
         (lookup-validators fields k)
-        k v)))
+        k v db)))
    validation-store
    fields))
 
@@ -246,7 +247,7 @@
                          (update-validation-store
                           validation-store
                           (lookup-validators fields k)
-                          k v))
+                          k v db))
                        (get-in db [:data id :validation])
                        new-data)]
        (-> db
@@ -268,7 +269,7 @@
            (update-validation-store
             validation-store
             (lookup-validators fields k)
-            k v))
+            k v db))
          validation
          data)]
     (empty? invalid-fields)))

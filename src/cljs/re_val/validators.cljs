@@ -9,7 +9,7 @@
 
 ;;TODO i18n
 (defn required-validator
-  [s]
+  [s k db]
   (debug s)
   (if (or (nil? s)
           (and (string? s)
@@ -19,7 +19,7 @@
 
 
 (defn something-selected-validator
-  [s]
+  [s k db]
   (if (or
        (= "-- selecteer --" s)
        (nil? s)
@@ -28,7 +28,7 @@
     [true ]))
 
 (defn checked-validator
-  [s]
+  [s k db]
   (debug s)
   (if (and (not (nil? s)) (boolean? s) s)
     [true ]
@@ -42,7 +42,7 @@
 
 
 (defn email-validator
-  [s]
+  [s k db]
   (if (valid-email? s)
     [true]
     [false "Dit is geen geldig e-mailadres."]))
