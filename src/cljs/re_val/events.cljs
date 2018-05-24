@@ -168,7 +168,7 @@
 
 (defn validate-all-fields
   "returns new validation store where everything is validated"
-  [validation-store fields data]
+  [validation-store fields data db]
   (reduce
    (fn [validation-store field]
      (let [k (:id field)
@@ -185,7 +185,8 @@
  (fn [db [_ id]]
    (let [{:keys [options data]}    (get-in db [:data id])
          fields                    (:fields options)
-         validation                (validate-all-fields (empty-validation-store fields) fields data)]
+         validation                (validate-all-fields
+                                    (empty-validation-store fields) fields data db)]
      (assoc-in db [:data id :validation] validation))))
 
 
@@ -206,7 +207,8 @@
                                                (rf/dispatch [:persist-form-error id new-data])
                                                (when (:error-fn options)
                                                  (apply (:error-fn options) new-data old-data))))
-         validation                        (validate-all-fields (empty-validation-store fields) fields data)
+         validation                        (validate-all-fields (empty-validation-store fields)
+                                                                fields data db)
          valid?                            (empty? (:invalid-fields validation))]
 
      (if-not valid?

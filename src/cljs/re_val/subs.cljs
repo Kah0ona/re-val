@@ -33,15 +33,21 @@
    (get-in db [:data id :validation])))
 
 (rf/reg-sub
+ :the-db
+ (fn [db _]
+   db))
+
+(rf/reg-sub
  :get-form-validation
  (fn [[_ form-id _] _]
    [(rf/subscribe [:get-form-data form-id])
     (rf/subscribe [:get-validation-store form-id])
-    (rf/subscribe [:get-form-options form-id])])
- (fn [[data validation-store {:keys [fields] :as options}] [_ form-id full?]]
+    (rf/subscribe [:get-form-options form-id])
+    (rf/subscribe [:the-db])])
+ (fn [[data validation-store {:keys [fields] :as options} db] [_ form-id full?]]
    (if (= :full full?)
      ;;validate all fields
-     (h/validate-all-fields (h/empty-validation-store fields) fields data)
+     (h/validate-all-fields (h/empty-validation-store fields) fields data db)
      ;;else, validate against existing validation store
      validation-store)))
 
