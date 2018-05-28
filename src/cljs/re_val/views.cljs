@@ -88,7 +88,7 @@
          :save! #(rf/dispatch [:update-form-field form-id k (dutil/date-picker-unparser %2)])}]])))
 
 (defn text-area
-  [form-id k & rest]
+  [form-id k & [rest]]
   (let [validation (rf/subscribe [:get-form-validation form-id])
         doc        (rf/subscribe [:get-form-field-data form-id k])
         chg        #(rf/dispatch [:update-form-field form-id k (-> % .-target .-value)])]
@@ -96,6 +96,7 @@
       [:textarea.form-control
        {:type      :text
         :class     (get-class k @validation)
+        :placeholder (:placeholder rest)
         :on-change #(rf/dispatch [:update-form-field form-id k (-> % .-target .-value)])
         :value     @doc}])))
 
