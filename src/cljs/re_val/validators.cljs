@@ -10,7 +10,6 @@
 ;;TODO i18n
 (defn required-validator
   [s k db]
-  (debug s)
   (if (or (nil? s)
           (and (string? s)
                (= "" (clojure.string/trim s))))
