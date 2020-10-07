@@ -1,6 +1,7 @@
 (ns re-val.richtexteditor
  (:require
-    [reagent.core :as r]))
+  [reagent.core :as r]
+  [reagent.dom :as rdom]))
 
 (defn quill-toolbar [id]
   [:div {:id (str "quill-toolbar-" id)}
@@ -67,8 +68,8 @@
       (fn [component]
         (reset! this
                 (js/Quill.
-                 (aget (.-children (r/dom-node component)) 1)
-                 #js {:modules     #js {:toolbar (aget (.-children (r/dom-node component)) 0)}
+                 (aget (.-children (rdom/dom-node component)) 1)
+                 #js {:modules     #js {:toolbar (aget (.-children (rdom/dom-node component)) 0)}
                       :theme       "snow"
                       :placeholder "Schrijf uw bericht..."}))
 
@@ -108,7 +109,7 @@
     (r/create-class
      {:component-did-mount
       (fn [component]
-        (reset! this (js/Quill. (r/dom-node component)
+        (reset! this (js/Quill. (rdom/dom-node component)
                                 #js {:theme "snow"
                                      :placeholder "Compose an epic..."}))
         (.disable @this))
