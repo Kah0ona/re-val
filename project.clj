@@ -1,4 +1,4 @@
-(defproject re-val "0.1.1"
+(defproject re-val "0.1.2"
   :description "A form component and form validation library/API for re-frame."
   :url "https://github.com/Kah0ona/re-val.git"
   :license {:name "MIT"}
