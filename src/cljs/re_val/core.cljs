@@ -7,5 +7,4 @@
             [re-val.subs]
             [re-val.validators]
             [re-val.views]
-            [cljsjs.quill]
             [reagent.core :as reagent]))

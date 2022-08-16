@@ -6,7 +6,6 @@
             [re-frame.core :as rf]
             [re-val.datepicker-component :as dpc]
             [re-val.datepicker-util :as dutil]
-            [re-val.richtexteditor :as quill]
             [reagent.core :as r]
             [taoensso.timbre :as timbre
              :refer-macros (log  trace  debug  info  warn  error  fatal  report
@@ -20,17 +19,6 @@
     (if (nil? (get invalid-fields k))
       (str "input-" (name k))
       (str "error input-" (name k)))))
-
-(defn rich-text-editor
-  [form-id k]
-  (let [doc (rf/subscribe [:get-form-field-data form-id k])]
-    (fn [form-id k]
-      (debug "rta" @doc)
-      [quill/editor
-       {:id (str "quill-"(name form-id) "-" (name k))
-        :content (or @doc "")
-        :selection nil
-        :on-change-fn #(rf/dispatch [:update-form-field form-id k %2])}])))
 
 (defn text-input
   [form-id k & [rest]]
