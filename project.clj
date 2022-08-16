@@ -1,17 +1,17 @@
-(defproject re-val "0.1.3"
+(defproject re-val "0.1.4"
   :description "A form component and form validation library/API for re-frame."
   :url "https://github.com/Kah0ona/re-val.git"
   :license {:name "MIT"}
-  :dependencies [[org.clojure/clojure "1.10.0"]
-                 [org.clojure/clojurescript "1.10.597"]
-                 [reagent "1.0.0-alpha2"]
+  :dependencies [[org.clojure/clojure "1.11.0"]
+                 [org.clojure/clojurescript "1.11.60"]
+                 [reagent "1.1.1"]
                  [re-frame-utils "0.1.0"]
                  [com.taoensso/timbre "4.10.0"]
                  [cljsjs/quill "1.3.7-0"]
                  [cljs-ajax "0.8.0"]
                  [fipp "0.6.10"] ;;pretty printer cljs
                  [com.andrewmcveigh/cljs-time "0.5.2"] ;date/time
-                 [re-frame "1.1.1"]]
+                 [re-frame "1.3.0-rc3"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
